@@ -85,6 +85,9 @@ contract Assign3bToken is IERC20{
     //owner
     address public owner;
     
+    //delegated owner
+    address private delegatedOwner;
+    
     string public name;
     string public symbol;
     uint public conversion;
@@ -93,6 +96,7 @@ contract Assign3bToken is IERC20{
         name = "Assign3 Token";
         symbol = "Token";
         owner = msg.sender;
+        
         
         conversion = 100; //1 ether equals 100 tokens
         _totalSupply = 1000000;
@@ -200,22 +204,37 @@ contract Assign3bToken is IERC20{
 
     }
     
+    function delegateOwnership(address Address) public{
+        require(owner == msg.sender, "Owner address mis-matched");
+        delegatedOwner = Address;
+    }
+    
+    function tranferOwnership(address newOwner) public{
+        require(owner == msg.sender, "Owner address mis-matched");
+        owner = newOwner;
+    }
     
     function adjustPrice(uint256 converionRate) public{
-        require(owner == msg.sender, "Owner address mis-matched");
+        require(owner == msg.sender || delegatedOwner == msg.sender, "Owner address mis-matched");
         conversion = converionRate;
         
     }
     
     function etherBalance() public view returns (uint balance){
-        require(msg.sender == owner, "Owner address mis-matched");
+        require(owner == msg.sender || delegatedOwner == msg.sender, "Owner address mis-matched");
         return address(this).balance;
     }
     
     function collectEther() public payable{
-        require(msg.sender == owner, "Owner address mis-matched");
+        require(owner == msg.sender, "Owner address mis-matched");
         payable(msg.sender).transfer(address(this).balance);
- }
+    }
+    
+    function sellTokens(uint256 tokens) public payable{
+        require(_balances[msg.sender]>0,"No tokens available to sell");
+         _balances[owner] =  _balances[owner] + tokens;
+         payable(msg.sender).transfer((tokens/conversion)*1000000000000000000);
+    }
     
     fallback() external payable{
         
