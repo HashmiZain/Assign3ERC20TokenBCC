@@ -607,7 +607,7 @@ contract assign4Token is Ownable, ERC721 {
     //Sale starts when the contract is deployed.
     uint private _lastTransactionTime = block.timestamp;
     
-    string public baseURI = "https://floydnft.com/token/";
+    string public baseURI = "https://floydnft.com/token/&quot";
     uint public totalSupply;
     uint public salePrice;
     uint private LAST_TOKEN_ID = 100;
