@@ -4,7 +4,7 @@ const web3 = new Web3('https://ropsten.infura.io/v3/9b02a81a69074206bd1e97a7b834
 
 const account1 = '0x9b64Ec623E24d67dB5C5a38AE93BE98a873bD731' // account address 1
 
-const privateKey1 = Buffer.from('7c05a6d12d3e77f1d8b4463a5ca16d23991dc3946868d5ef9060181212af8e0f', 'hex')
+const privateKey1 = Buffer.from('privatekey', 'hex')
 
 // Deploy the contract
 web3.eth.getTransactionCount(account1, (err, txCount) => {
